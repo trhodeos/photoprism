@@ -29,6 +29,7 @@ func TestExif(t *testing.T) {
 		assert.Equal(t, "", data.CameraOwner)
 		assert.Equal(t, "", data.CameraSerial)
 		assert.Equal(t, 27, data.FocalLength)
+		assert.Equal(t, "1/50", data.Exposure)
 		assert.Equal(t, 1, int(data.Orientation))
 
 		// TODO: Values are empty - why?
@@ -61,6 +62,7 @@ func TestExif(t *testing.T) {
 		assert.Equal(t, "Thomas Meyer-Boudnik", data.CameraOwner)
 		assert.Equal(t, "2260716910", data.CameraSerial)
 		assert.Equal(t, 100, data.FocalLength)
+		assert.Equal(t, "1/125", data.Exposure)
 		assert.Equal(t, 1, int(data.Orientation))
 	})
 
@@ -89,6 +91,7 @@ func TestExif(t *testing.T) {
 		assert.Equal(t, "", data.CameraOwner)
 		assert.Equal(t, "", data.CameraSerial)
 		assert.Equal(t, 16, data.FocalLength)
+		assert.Equal(t, "1/2462", data.Exposure)
 		assert.Equal(t, 1, int(data.Orientation))
 	})
 

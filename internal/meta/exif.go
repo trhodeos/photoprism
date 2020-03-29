@@ -15,6 +15,37 @@ import (
 	"gopkg.in/ugjka/go-tz.v2/tz"
 )
 
+// Compute the greatest common denominator between two numbers.
+func gcd(a, b int64) (denom int64, err error) {
+	if a == 0 || b == 0 {
+		err = fmt.Errorf("Undefined GCD: %d %d", a, b)
+		return 0, err
+	}
+	for b != 0 {
+		t := b
+		b = a % b
+		a = t
+	}
+	return a, nil
+}
+
+// Try to reduce fraction. If input not a fraction, return the input value.
+func maybeReduceFraction(input string) (output string) {
+	values := strings.Split(input, "/")
+	if len(values) != 2 {
+		return input
+	}
+	num, _ := strconv.ParseInt(values[0], 10, 64)
+	denom, _ := strconv.ParseInt(values[1], 10, 64)
+	common_denom, err := gcd(num, denom)
+	if err != nil {
+		common_denom = 1
+	}
+	num = num / common_denom
+	denom = denom / common_denom
+	return fmt.Sprintf("%d/%d", num, denom)
+}
+
 // Exif parses an image file for Exif meta data and returns as Data struct.
 func Exif(filename string) (data Data, err error) {
 	defer func() {
@@ -157,7 +188,7 @@ func Exif(filename string) (data Data, err error) {
 	}
 
 	if value, ok := tags["ExposureTime"]; ok {
-		data.Exposure = value
+		data.Exposure = maybeReduceFraction(value)
 	}
 
 	if value, ok := tags["FNumber"]; ok {
